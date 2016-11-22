@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become_method: sudo
+  become_user: root
+  roles:
+    - common
+    - docker
+    - guest_ansible
+    - java

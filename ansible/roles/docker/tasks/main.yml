@@ -1,0 +1,66 @@
+- stat: path={{ docker_list_path }}
+  register: dl_path
+
+- name: Add Docker repository key
+  apt_key:
+    id: "{{ apt_key_sig }}"
+    keyserver: "{{ apt_key_url }}"
+    state: present
+  register: add_repository_key
+  ignore_errors: false
+  become: true
+
+- name: Create empty docker list file
+  file: 
+    path: "{{ docker_list_path}}"
+    state: touch
+  when: dl_path.stat.exists == false
+  become: true
+
+- name: Add docker repository link 
+  lineinfile: 
+    dest: "{{ docker_list_path }}"
+    line: "{{ apt_repository }}"
+  become: true
+
+- name: rerun apt update
+  apt: update_cache=true
+  become: true
+
+- name: purge any existing docker repo
+  apt: name=lxc-docker purge=yes state=absent
+  become: true
+
+- name: install docker-engine
+  apt: name=docker-engine state=present
+  become: true
+
+- name: create group for docker
+  group: name=docker state=present
+
+- name: add user vagrant to the docker group
+  user: 
+    name: vagrant
+    groups: docker
+    append: yes
+  become: true
+
+- name: enable docker as a service and start at boot
+  service: name=docker enabled=yes state=started
+  become: true
+
+# Docker-compose section
+- stat: path="{{ docker_tools_path }}/docker-compose"
+  register: docker_comose_distro
+
+- name: download docker-compose distribution
+  get_url: 
+    url: "{{ docker_tools_compose_exe_url }}"
+    dest: "{{ docker_tools_path }}/docker-compose"
+    force: yes
+    mode: 0750
+    group: docker
+  async: 300
+  poll: 5
+  when: docker_comose_distro.stat.exists == false
+  become: true

@@ -1,0 +1,10 @@
+---
+java_version: 8
+java_subversion: 92
+jdk_version: "1.{{java_version}}.0_{{java_subversion}}"
+jdk_arch: x64
+jdk_os: linux
+jdk_version_detail: "{{java_version}}u{{java_subversion}}-b14"
+jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-{{ jdk_os }}-{{ jdk_arch }}"
+jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version_detail }}/{{ jdk_tarball_file }}"
+java_home: "/opt/java/jdk{{jdk_version}}"

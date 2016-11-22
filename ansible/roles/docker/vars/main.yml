@@ -1,0 +1,5 @@
+---
+docker_tools_path: '/usr/local/bin'
+
+docker_tools_compose_version: 1.8.0
+docker_tools_compose_exe_url: "https://github.com/docker/compose/releases/download/{{ docker_tools_compose_version }}/docker-compose-Linux-x86_64"

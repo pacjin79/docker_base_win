@@ -1,0 +1,43 @@
+---
+- stat: path="/tmp/{{jdk_tarball_file}}.tar.gz"
+  register: jdk_tarball
+
+- stat: path="{{java_home}}"
+  register: jdk_home
+
+- name: create java dir 
+  file: path="/opt/java" state="directory" owner=vagrant
+  become: true
+
+- name: fetch JDK 1.8
+  get_url:
+    url: "{{jdk_tarball_url}}.tar.gz"
+    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+    dest: /tmp
+  async: 300
+  poll: 5
+  when: jdk_tarball.stat.exists == false
+
+- name: unarchive JDK 1.8
+  unarchive: src="/tmp/{{jdk_tarball_file}}.tar.gz" dest="/opt/java" copy=no
+  when: jdk_home.stat.exists == false
+
+- name: set java env variables
+  lineinfile: 
+    dest: /etc/environment
+    regexp: 'JAVA_HOME='
+    line: "{{item}}"
+    insertbefore: "PATH(?==)"
+    state: present
+  with_items: 
+    - "export JAVA_HOME={{java_home}}"
+  become: true
+
+- name: update existing path for java
+  lineinfile:
+    dest: /etc/environment
+    regexp: '(?=PATH=)(?!.*?/java)(^(.*)")'
+    line: '\2:{{java_home}}/bin"'
+    backrefs: yes
+    state: present
+  become: true
