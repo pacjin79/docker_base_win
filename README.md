@@ -1,4 +1,4 @@
-# Base box with with the awesome software installed
+# Base box with some awesome software installed
 
 
 
