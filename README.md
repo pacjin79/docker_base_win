@@ -1,9 +1,9 @@
-# Base box with with the following software installed
+# Base box with with the awesome software installed
 
 
 
 ## Purpose:
-Base ubuntu box with docker and ansible enabled for development convenience.
+Base ubuntu box with the following softeware configured and enabled for development convenience 
 
 * docker
 * ansible
