@@ -17,7 +17,7 @@ Base ubuntu box with docker and ansible enabled for development convenience.
 
 ## Usage:
 
-1. [Download and install vagrant for windows](http://www.google.com)
+1. [Download and install vagrant for windows](https://www.vagrantup.com/downloads.html)
 2. Clone this repository.
 3. Cd into the `docker_base_win`
 3. Create the box by entering the following command
