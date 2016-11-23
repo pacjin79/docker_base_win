@@ -1,3 +1,4 @@
 .vagrant
 .ida
 app
+playbook.retry

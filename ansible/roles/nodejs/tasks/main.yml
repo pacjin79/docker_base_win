@@ -1,0 +1,22 @@
+---
+- name: add NodeSource repository for Node.js 6.0
+  apt_repository: repo='{{item}} https://deb.nodesource.com/node_6.x {{ ansible_distribution_release|lower }} main' state=present
+  with_items:
+    - deb
+  when: (nodejs_version|string) | match('^6.*$')
+  become: true
+
+- name: install Node.js with specific version
+  apt: name="nodejs={{ nodejs_version }}*"  update_cache=yes  state=present force=yes
+  become: true
+
+- name: install global npm libs
+  npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default('latest') }}"
+    global: yes
+    state: latest
+  with_items: "{{ nodejs_npm_global_packages }}"
+  become: true
+  async: 600
+  poll: 10
