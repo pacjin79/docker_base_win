@@ -25,6 +25,9 @@ Base ubuntu box with the following softeware configured and enabled for developm
 
 ```
 vagrant up
+```
+Once the script finishes running, enter the following commend to log onto the VM
+```
 vagrant ssh (*Note, this will fail on windows 7 and you will need to download putty.exe to ssh)
 ```
 
